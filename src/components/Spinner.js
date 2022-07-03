@@ -12,3 +12,5 @@ export class Spinner extends Component {
 }
 
 export default Spinner
+
+//API KEY 04f8e70122e04e1ebd2c0ab9464a53c1

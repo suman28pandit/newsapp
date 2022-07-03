@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+//API KEY 04f8e70122e04e1ebd2c0ab9464a53c1
 
 export class NewsItem extends Component {
     render() {
