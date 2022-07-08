@@ -3,6 +3,8 @@ import NewsItem from './NewsItem'
 import Spinner from './Spinner';
 import PropTypes from 'prop-types'
 import InfiniteScroll from "react-infinite-scroll-component";
+import Logo from './The Trending Headlines of India.svg';
+
 
 //API KEY 04f8e70122e04e1ebd2c0ab9464a53c1
 
@@ -30,7 +32,7 @@ export class News extends Component {
             page: 1,
             totalResults: 0
         }
-        document.title = `${this.capitalizeFirstLetter(this.props.category)} - NewsMonkey`;
+        document.title = `${this.capitalizeFirstLetter(this.props.category)} - The Trending Headlines of India`;
     }
 
     async updateNews() {
@@ -43,7 +45,7 @@ export class News extends Component {
         this.setState({
             articles: parsedData.articles,
             totalResults: parsedData.totalResults,
-            loading: false, 
+            loading: false,
         })
         this.props.setProgress(100);
 
@@ -63,8 +65,8 @@ export class News extends Component {
         this.updateNews()
     }
 
-    fetchMoreData = async () => {  
-        this.setState({page: this.state.page + 1})
+    fetchMoreData = async () => {
+        this.setState({ page: this.state.page + 1 })
         const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=04f8e70122e04e1ebd2c0ab9464a53c1&page=${this.state.page}&pageSize=${this.props.pageSize}`;
         let data = await fetch(url);
         let parsedData = await data.json()
@@ -72,29 +74,33 @@ export class News extends Component {
             articles: this.state.articles.concat(parsedData.articles),
             totalResults: parsedData.totalResults
         })
-      };
+    };
 
     render() {
         return (
             <>
-                <h1 className="text-center" style={{ margin: '35px 0px' }}>NewsMonkey - Top {this.capitalizeFirstLetter(this.props.category)} Headlines</h1>
+                <div className="text-center">
+                    <img className="my-1" style={{ width: '200px' }} src={Logo} alt="logo" />
+                </div>
+              
+                <h1 className="text-center" style={{ margin: '15px 0px' }}>Trending in India - Top {this.capitalizeFirstLetter(this.props.category)} Headlines</h1>
                 {this.state.loading && <Spinner />}
                 <InfiniteScroll
                     dataLength={this.state.articles.length}
                     next={this.fetchMoreData}
                     hasMore={this.state.articles.length !== this.state.totalResults}
-                    loader={<Spinner/>}
-                > 
+                    loader={<Spinner />}
+                >
                     <div className="container">
-                         
-                    <div className="row">
-                        {this.state.articles.map((element) => {
-                            return <div className="col-md-4" key={element.url}>
-                                <NewsItem title={element.title ? element.title : ""} description={element.description ? element.description : ""} imageUrl={element.urlToImage} newsUrl={element.url} author={element.author} date={element.publishedAt} source={element.source.name} />
-                            </div>
-                        })}
+
+                        <div className="row">
+                            {this.state.articles.map((element) => {
+                                return <div className="col-md-4" key={element.url}>
+                                    <NewsItem title={element.title ? element.title : ""} description={element.description ? element.description : ""} imageUrl={element.urlToImage} newsUrl={element.url} author={element.author} date={element.publishedAt} source={element.source.name} />
+                                </div>
+                            })}
+                        </div>
                     </div>
-                    </div> 
                 </InfiniteScroll>
 
             </>
